@@ -1,0 +1,23 @@
+extends ./layout
+block title 
+    title Error - SmartShop
+block error
+    #error-frame
+        .error-content
+            h1 404
+            h4 Opps! #{message}
+            p Soory, the page you're looking for doesn't exist. you can go to home page.
+            if title
+                .error-btn
+                    a(href='/products/All?page=1') #{title}
+            if error
+                h2 #{error.status}
+                pre #{error.stack}
+                .error-btn
+                    a(href='/') Return home
+    //- h1 #{message}
+    //- if title 
+    //-     a(href='/products/All?page=1') #{title}
+    //- if error
+    //-     h2 #{error.status}
+    //-     pre #{error.stack}

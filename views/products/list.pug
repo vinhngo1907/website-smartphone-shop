@@ -1,0 +1,129 @@
+extends ../layout 
+block title 
+    title #{title} Products - SmartShop
+block content
+    .loader-wrapper
+        span.loader
+            span.loader-inner
+    .popup_alert.center
+        div(data-aos='fade-up', data-aos-duration='1000')
+            .icon
+                i.fa.fa-check
+            .title Success!!
+            //- if message && message.length>0
+                .description #{message}
+            .description
+            .dismiss-btn
+                button#dismiss-popup-btn Dismiss
+    .page__title-area
+        .container
+            .page__title-container
+                ul.page__titles
+                    li
+                        a(href="/")
+                            i.fas.fa-home
+                    li.page__title 
+                        a(href="/products") Stores
+                    li.page__title 
+                        a(href=`/products/${title}?page=${page}`) #{title}
+
+    
+        //- .dropdown
+            form(method='POST', action='/products/sort/All?page=1')
+                select.orderby(name='orderby', aria-label='Shop order', onchange='this.form.submit()')
+                    option(value="", selected, disabled, hidden='') #{sort_value}
+                    option(value='1') Giá thấp tới cao
+                    option(value='-1') Giá cao tới thấp
+
+    section#products
+        .products-container(data-aos="fade-up", data-aos-duration="1200")
+            if products
+                each product in products
+                    .product-tile
+                        img(src=`${product.url}`, alt=`${product.proName}`)
+                        .product-info
+                            span.product-cate= product.proCategory 
+                            h3=product.proName
+                            .product-prices
+                                - var sale_off = (product.price - (product.price*product.sale_off)/100)/22765.00
+                                if product.sale_off !== 0
+                                    span.price #{sale_off.toLocaleString('en-US',{style:'currency', currency:'USD'})}
+                                else
+                                    span.price #{(product.price/22765.00).toLocaleString('en-US',{style:'currency', currency:'USD'})}
+                            .product-rating
+                                i.fas.fa-star
+                                i.fas.fa-star
+                                i.fas.fa-star
+                                i.fas.fa-star
+                                i.fas.fa-star-half-alt
+                            .overview
+                                a(href="/products/info/"+product._id,target="_self")
+                                    button View now
+                                //- a(href="/cart/add/"+product._id,target="_self") onclick='LockUser("'+ user._id +'")'
+                                a(onclick='addItem("'+ product._id+'","'+product.inventNumb+'")', role='button')
+                                    button#add_to_cart Buys now    
+        .pagination 
+            ul
+                if data1 
+                    each item in data1
+                        if item.NumOfPage !== "..."
+                            if item.NumOfPage !== page
+                                li.numb
+                                    a(href=`/products/sort/${item.orderby}?page=`+item.NumOfPage) #{item.NumOfPage}
+                            else 
+                                li.numb.active
+                                    a(href=`/products/sort/${item.orderby}?page=`+item.NumOfPage) #{item.NumOfPage}
+                if data2
+                    each item in data2
+                        if item.NumOfPage !== "..."
+                            if item.NumOfPage !== page
+                                li.numb
+                                    a(href=`/products/search/${item.key}?page=`+item.NumOfPage) #{item.NumOfPage}
+                            else 
+                                li.numb.active
+                                    a(href=`/products/search/${item.key}?page=`+item.NumOfPage) #{item.NumOfPage}
+                
+                if !data1 && !data2
+                    if page === range[0]
+                        li.button.prev.none
+                            a.none(href=`/products/${title}?page=`+prevPage) 
+                                i.fas.fa-angle-left
+                                |  Prev
+                    else 
+                        li.button.prev
+                            a(href=`/products/${title}?page=`+prevPage) 
+                                i.fas.fa-angle-left
+                                | Prev
+                    
+                    each item in range 
+                        if item !== "..."
+                            if item !== page
+                                li.numb
+                                    a(href=`/products/${title}?page=`+item)=item
+                            else 
+                                li.numb.active
+                                    a(href=`/products/${title}?page=`+item)=item
+                        else 
+                            li.dots
+                                a(href="#") #{item}
+                    if page === range[range.length-1]
+                        li.button.next.none
+                            a.none(href="/products?page="+nextPage)
+                                | Next
+                                i.fas.fa-angle-right
+                    else
+                        li.button.next
+                            a(href=`/products/${title}?page=`+nextPage) 
+                                | Next 
+                                i.fas.fa-angle-right                                  
+//- block scripts 
+    script.
+        let mess = $('.description').text()
+        if(mess !== ''){
+            $('.popup_alert').addClass("active");
+            document.body.classList.add('active_cart');
+        }
+        document.getElementById("dismiss-popup-btn").addEventListener("click",function(){
+            document.getElementsByClassName("popup_alert")[0].classList.remove("active");
+            document.body.classList.remove('active_cart');
+        });

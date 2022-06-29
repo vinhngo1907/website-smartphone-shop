@@ -1,0 +1,54 @@
+extends ../layout
+block title 
+    title Profile Settings - SmartShop
+block content 
+    .container
+        .col-md-6
+            form.form-checkout(method="post",action="/user/edit", enctype="multipart/form-data",style="display:flex;flex-direction:column;")
+                .billing-details(style="width:100%; max-width:600px;")
+                    div.section-title
+                        h3 Thay đổi thông tin tài khoản
+                    div
+                
+                    .form-control
+                        label(for="email") Email
+                        input#email(type="text", name="email", value=user?user.email:"",placeholder="abc@vinh-ngo.com")
+                        small#message #{message}
+                        if msg && msg.email
+                            i.fas.fa-exclamation-circle
+                            small #{msg.email}
+
+                    .form-control
+                        label(for="name") Full Name
+                        input#name(type="text", name="name", value=user?user.name:"",placeholder="abc vinh-ngo", required)
+
+                    .form-control
+                        label(for="username") Username
+                        input#username(type="text", name="username", value=user?user.username:"",placeholder="vinhngo21", required)
+
+                    .form-control
+                        label(for="sdt") Phone Number
+                        input#sdt(type="text", name="phoneNumb", value=user?user.phoneNumb:"",placeholder="0869561165", required)
+
+                    .form-control
+                        label(for="addr") Address
+                        input#addr(type="text", name="address", value=user?user.address:"",placeholder="Số 29 đường Phạm Ngũ Lão", required)
+                    .form-control 
+                        label(for='avatar') Avatar:
+                        input#avatar(type="file", name="avatar", value=user?user.avatar:"")
+                    
+                    button#checkOut Chỉnh sửa
+block scripts
+    script.
+        $('#email').keyup(function() {
+            $.getJSON('/api/user/check?email='+$('#email').val(), function (data){
+                if (data) {
+                    $('#message').html('Email đã tồn tại. Vui lòng chọn email khác.');
+                    $("#checkOut").attr("disabled", true);
+                }
+                else {
+                    $('#message').html('');
+                    $("#checkOut").attr("disabled", false);
+                }
+            })
+        });

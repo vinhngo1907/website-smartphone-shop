@@ -1,0 +1,152 @@
+extends ./layout
+
+block slider 
+    .slider-container(data-aos='fade-up', data-aos-duration='1200')
+        h1
+            | The best for
+            br
+            | the brightest.
+        .slide(style="background-image: url('https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80')")
+        .slide(style="background-image: url('https://images.unsplash.com/photo-1453928582365-b6ad33cbcf64?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80')")
+        .slide(style="background-image: url('https://images.unsplash.com/photo-1504707748692-419802cf939d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1330&q=80')")
+        .controls-slide
+            .control 
+            .control 
+            .control
+block category
+    .container#container
+        section#collection.section.collection
+            .collection__container(data-aos='fade-up', data-aos-duration='1200')
+                .collection__box
+                    .img__container
+                        img.collection_02(src='/images/demo/collection_03.png', alt='collection_03')
+                    .collection__content
+                        .collection__data
+                            span New Colors Introduced
+                            h1 SamSung
+                            a(href='/products/SamSung?page=1') SHOP NOW
+                .collection__box
+                    .img__container
+                        img.collection_01(src='/images/demo/collection_01.png', alt='collection_01')
+                    .collection__content
+                        .collection__data
+                            span Phone Device Presets
+                            h1(style='min-width: 165px; ') Apple
+                            a(href='/products/Apple?page=1') SHOP NOW
+block latest 
+    .container#container
+        section.section.latest__products#latest
+            .title__container
+                .section__title.active(data-id='Latest Products')
+                    span.dot
+                    h1.primary__title Latest Products
+            .container(data-aos='fade-up', data-aos-duration='1200')
+                #glide_2.glide
+                    .glide__track(data-glide-el='track')
+                        ul.glide__slides.latest-center
+                            each item in products
+                                li.glide__slide
+                                    .product
+                                        .product__header
+                                            img(src=`${item.url}` alt="product")
+                                        .product__footer
+                                            h3 #{item.proName}
+                                            .rating_latest
+                                                svg
+                                                    use(xlink:href='./images/sprite.svg#icon-star-full')
+                                                svg
+                                                    use(xlink:href='./images/sprite.svg#icon-star-full')
+                                                svg
+                                                    use(xlink:href='./images/sprite.svg#icon-star-full')
+                                                svg
+                                                    use(xlink:href='./images/sprite.svg#icon-star-full')
+                                                svg
+                                                    use(xlink:href='./images/sprite.svg#icon-star-empty')
+                                            .product__price
+                                                - var sale_off = (item.price - (item.price*item.sale_off)/100)/22765.00
+                                                if item.sale_off !== 0
+                                                    h4 #{sale_off.toLocaleString('en-US',{style:'currency', currency:'USD'})}
+                                                    
+                                                else
+                                                    h4 #{(item.price/22765.00).toLocaleString('en-US',{style:'currency', currency:'USD'})}
+                                                a#add_btn.product__btn(onclick='addItem("'+ item._id+'","'+item.inventNumb+'")', role='button') Add To Cart
+                                            //- a(href=`/api/cart/add/${item._id}`)
+                                                button#add_btn.product__btn(type='submit') Add To Cart
+                    .glide__arrows(data-glide-el="controls")
+                        button.glide__arrow.glide__arrow--left(data-glide-dir='<')
+                            svg
+                                use(xlink:href='/images/sprite.svg#icon-arrow-left2')
+                        button.glide__arrow.glide__arrow--right(data-glide-dir='>')
+                            svg
+                                use(xlink:href='/images/sprite.svg#icon-arrow-right2')
+    .container#container
+        section.section.news#news
+            .title__container
+                .section__title.active
+                    span.dot
+                    h1.primary__title Phone News
+            .container(data-aos='fade-up', data-aos-duration='1200')
+                #glide_5.glide
+                    .glide__track(data-glide-el="track")
+                        ul.glide__slides
+                            li.glide__slide
+                                .new__card
+                                    .card__header
+                                        img(src='/images/demo/news5.jpg', alt='')
+                                    .card__footer
+                                        h3 Change your life with technology
+                                        span By Admin
+                                        p
+                                            | Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo praesentium, numquam non
+                                            | provident rem sed minus natus unde vel modi!
+                                        a(href='#')
+                                            button Read More
+                            li.glide__slide
+                                .new__card
+                                    .card__header
+                                        img(src='/images/demo/popup2.jpg', alt='')
+                                    .card__footer
+                                        h3 Working with together to make it better
+                                        span By Admin
+                                        p
+                                            | Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo praesentium, numquam non
+                                            | provident rem sed minus natus unde vel modi!
+                                        a(href='#')
+                                            button Read More
+                            li.glide__slide
+                                .new__card
+                                    .card__header
+                                        img(src='/images/demo/news4.jpg', alt='')
+                                    .card__footer
+                                        h3 Stay home and shopping spree
+                                        span By Admin
+                                        p
+                                            | Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo praesentium, numquam non
+                                            | provident rem sed minus natus unde vel modi!
+                                        a(href='#')
+                                            button Read More
+                            
+block popUp 
+    .popup.hide__popup
+        .popup__content
+            .popup__close
+                svg
+                    use(xlink:href='/images/sprite.svg#icon-cross')
+            .popup__left
+                .popup-img__container
+                    img.popup__img(src='/images/demo/popup.jpg', alt='popup')
+            .popup__right
+                .right__content
+                    h1
+                        | Get Discount 
+                        span 30%
+                        |  Off
+                    p Sign up to our newsletter and save 30% for you next purchase. No spam, we promise!
+                    form(action='/contact',method='POST',enctype="multipart/form-data")
+                        input.popup__form(type='email', placeholder='Enter your email...')
+                        //- a(href='#') Subscribe
+                        button Subscribe
+                            
+
+block scripts 
+    script(src="/js/slider.js")

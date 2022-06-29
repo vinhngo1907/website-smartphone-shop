@@ -1,0 +1,94 @@
+extends ../layout
+block title
+    title Cart - Smartphone
+block content
+    .loader-wrapper
+        span.loader
+            span.loader-inner
+    .popup_alert.center
+        div(data-aos='fade-up', data-aos-duration='1000')
+            .icon
+                i.fa.fa-check
+            .title Success!! 
+            .description
+            .dismiss-btn
+                button#dismiss-popup-btn Dismiss
+    .page__title-area
+        .container
+            .page__title-container
+                ul.page__titles
+                    li
+                        a(href="/")
+                            i.fas.fa-home
+                    li.page__title 
+                        a(href="/cart") Cart
+    div#table_cart
+        if data.length > 0 && total > 0
+            .container-invoice
+                h3 Cart
+                div#item__list
+                    table.table.table-responsive
+                        thead
+                            tr
+                                th Index
+                                th Image
+                                th Product
+                                th Unit
+                                th Price
+                                th Actor
+                        tbody
+                            - var i = 0
+                            each pd in data
+                                - i = i + 1
+                                - var index = i < 10 ? `0${i}` : i
+                                tr
+                                    td(data-title='Index') #{index}
+                                    td(data-title='Image')
+                                        img(src=`${pd.url}`,alt=`${pd.proName}`, style="width: 50px; height: 50px;")
+                                    td(data-title='Product') #{pd.proName}
+                                    //- td #{pd.qty}
+                                    td(data-title='Unit') 
+                                        .input-counter
+                                            //- a.minus-btn(href="/cart/minus/"+pd._id) 
+                                            a.minus-btn(onclick='minus_to_cart("'+ pd._id +'")', role='button') 
+                                                i.fas.fa-minus
+                                            input#qty.counter-btn(type='text', min='1', value=`${pd.qty}`, max='3', disabled)
+                                            //- a.plus-btn(href=`/api/cart/add/${pd._id}`)
+                                                i.fas.fa-plus
+                                            a.plus-btn(onclick='add_to_cart("'+ pd._id +'")', role='button')
+                                                i.fas.fa-plus
+                                    - let current = (pd.newPrice/22765.00)
+                                    td(data-title='Price') #{current.toLocaleString('en-US',{ style: 'currency',currency: 'USD'})}
+                                    td(data-title='Actor') 
+                                        a.remove(onclick='deleteItem("'+ pd._id +'")', role='button')
+                                            i.fas.fa-times-circle
+                    .total
+                        span Total
+                        span(style="color: red;font-size:18px;font-weight:bold;") #{(total/22765.00).toLocaleString('en-US',{ style: 'currency',currency: 'USD'})}
+
+                div.check__total
+                    a.btn-shop(href="/products/All?page=1") 
+                        i.fas.fa-arrow-left
+                        | Continue Shopping
+                    div(style="margin-top:5px;")
+                        a.btn-del(href="/cart/delete-cart",style="margin-right: 1rem;") 
+                            i.fas.fa-trash-alt
+                            | Delete cart
+                        button.btn-pay 
+                            a(href="/cart/check-out") Pay Now      
+        else
+            .empty-cart(style="text-align:center;")
+                .container
+                    h1.text-3xl.font-bold Cart Empty 😕
+                    p.text-gray-500.text-lg.mb-12 
+                        | You probably haven't ordered a phone yet. 
+                        br
+                        |  To order a phone, go to the main page.
+                    img(src='/images/empty-cart.png', alt='empty-cart',width='100')
+                    a.btn-shop(href="/products/All?page=1") 
+                        i.fas.fa-arrow-left
+                        | Go back
+//- block scripts
+    script.
+        var temp = document.getElementById('cart-trigger')
+        temp.classList.add('none')

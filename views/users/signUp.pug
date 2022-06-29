@@ -1,0 +1,138 @@
+extends ../layout
+block title 
+    title Register - Smartshop
+block content
+    .popup_alert.center
+        div(data-aos='fade-up', data-aos-duration='1200')
+            .icon
+                i.fa.fa-check
+            .title Success!!
+            if msg && typeof msg !== 'undefined' 
+                .description #{msg.success}
+            else if mess && typeof mess !== 'undefined'
+                .description #{mess}
+            .dismiss-btn
+                button#dismiss-popup-btn Dismiss
+    .page__title-area
+        .container
+            .page__title-container
+                ul.page__titles
+                    li
+                        a(href="/")
+                            i.fas.fa-home
+                    li.page__title 
+                        a(href="user/info") user
+                    li.page__title 
+                        a(href=`/user/${title}`) #{title}
+    .container-form 
+        .header(style="display:flex;")    
+            h2 Create Account
+            .div(style="margin-left:auto;")
+                if msg && msg.message
+                    small(style="color:red;font-style:italic;font-weight:bold;") All feilds are required
+        
+        form.form(action="/user/sign-up", method="POST", encrypt="multipart/form-data")
+            .user-details
+                .form-control
+                    label(for="email") Email
+                    input#email(type="text", name="email", value=values?values.email:"",placeholder="abc@vinh-ngo.com")
+                    //- if msg && msg.email
+                        i.fas.fa-exclamation-circle
+                        small=msg.email
+                    small#email_msg #{message} 
+                .form-control
+                    label(for="name") Full Name
+                    input#name(type="text", name="name", value=values?values.name:"",placeholder="abc vinh-ngo")
+                    if msg && msg.name
+                        i.fas.fa-exclamation-circle
+                        small=msg.name
+                    else
+                        i.fas.fa-check-circle
+                .form-control
+                    label(for="username") Username
+                    input#username(type="text", name="username", value=values?values.username:"",placeholder="vinhngo21")
+                    if msg && msg.username
+                        i.fas.fa-exclamation-circle
+                        small=msg.username
+                    else
+                        i.fas.fa-check-circle
+
+                .form-control
+                    label(for="sdt") Phone Number
+                    input#sdt(type="text", name="sdt", value=values?values.sdt:"",placeholder="+007 9089 6767")
+                    //- if msg && msg.sdt
+                        i.fas.fa-exclamation-circle
+                        small=msg.sdt          
+                    small#phone #{phone}              
+                
+                .form-control
+                    label(for="password") Password
+                    input#password(type="password", name="password", value=values?values.password:"",placeholder="Password")
+                    if msg && msg.pass
+                        i.fas.fa-exclamation-circle
+                        small=msg.pass
+                    else
+                        i.fas.fa-check-circle
+                    
+                .form-control
+                    label(for="password2") Password check
+                    input#password2(type="password", name="re_pass", value=values?values.re_pass:"",placeholder="Password two")
+                    if msg && msg.re_pass
+                        i.fas.fa-exclamation-circle
+                        small=msg.re_pass
+                    else
+                        i.fas.fa-check-circle
+                .form-control
+                    label(for="addr") Address
+                    input#addr(type="text", name="addr", value=values?values.addr:"",placeholder="42 Dream City, Dreammy street, 7131 Dreamville, USA")
+                    if msg && msg.addr
+                        i.fas.fa-exclamation-circle
+                        small=msg.addr
+                    else
+                        i.fas.fa-check-circle
+                //- .form-control
+                //-     small#email_msg #{message}
+                //- .form-control 
+                //-     small#phone #{phone}
+            button#register Submit
+            p
+                span.form-txt Already have an account? 
+                    a(href="/user/sign-up") Sign in!
+block scripts
+    script.
+        
+        $('#email').keyup(function() {
+            $.getJSON('/api/user/check?email='+$('#email').val(), function (res){
+                //- console.log(res)
+                if (!res.success) {
+                    $('#email_msg').html(res.message);
+                    $("#register").attr("disabled", true);
+                }
+                else if(res.success){
+                    $('#email_msg').html('');
+                    $("#register").attr("disabled", false);
+                }
+            })
+        });
+        $('#sdt').keyup(function() {
+            $.getJSON('/api/user/phone?sdt='+$('#sdt').val(), function (res){
+                if (!res.success) {
+                    $('#phone').html(res.message);
+                    $("#register").attr("disabled", true);
+                }
+                else {
+                    $('#phone').html('');
+                    $("#register").attr("disabled", false);
+                }
+            })
+        });
+
+        let mess = $('.description').text()
+        if(mess !== 'false' && mess !== ''){
+            $('.popup_alert').addClass("active");
+            document.body.classList.add('active_cart');
+        }
+        document.getElementById("dismiss-popup-btn").addEventListener("click",function(){
+            document.getElementsByClassName("popup_alert")[0].classList.remove("active");
+            document.body.classList.remove('active_cart');
+        });

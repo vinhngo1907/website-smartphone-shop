@@ -1,0 +1,47 @@
+extends ../layout
+block title 
+    title Change Password - Smartshop
+block content
+    .page__title-area
+        .container
+            .page__title-container
+                ul.page__titles
+                    li
+                        a(href="/")
+                            i.fas.fa-home
+                    li.page__title
+                        a(href="#") user
+                    li.page__title 
+                        a(href=`${title}`) #{title} 
+    .container-form 
+        .header    
+            h2 Create Account
+        form#form.form(action="/user/change-password", method="POST", encrypt="multipart/form-data")
+            .form-control
+                label(for="old_pass") Old Password
+                input#old_pass(type="password", name="old_pass", value=values?values.old_pass:"",placeholder="Old Password")
+                if msg && msg.old_pass
+                    i.fas.fa-exclamation-circle
+                    small=msg.old_pass
+                else
+                    i.fas.fa-check-circle
+            .user-details
+                
+                .form-control
+                    label(for="password") New Password
+                    input#password(type="password", name="password", value=values?values.password:"",placeholder="Password")
+                    if msg && msg.pass
+                        i.fas.fa-exclamation-circle
+                        small=msg.pass
+                    else
+                        i.fas.fa-check-circle
+                    
+                .form-control
+                    label(for="password2") Password check
+                    input#password2(type="password", name="re_pass", value=values?values.re_pass:"",placeholder="Password two")
+                    if msg && msg.re_pass
+                        i.fas.fa-exclamation-circle
+                        small=msg.re_pass
+                    else
+                        i.fas.fa-check-circle
+            button#register Submit

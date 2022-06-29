@@ -1,0 +1,58 @@
+extends ../layout
+block title 
+    title Forgot Password - Smartshop
+block content
+    .page__title-area
+        .container
+            .page__title-container
+                ul.page__titles
+                    li
+                        a(href="/")
+                            i.fas.fa-home
+                    li.page__title
+                        a(href="#") user
+                    li.page__title 
+                        a(href=`${title}`) #{title} 
+    .container-form(style="width: 100%;max-width: 500px;") 
+        .header    
+            h2 Enter Information
+        //- - console.log("adas",message)
+        form#form.form(novalidate='novalidate', action='/user/forgot-password', method="POST", encrypt="multipart/form-data")
+            .form-control
+                label(for="email") Email (*)
+                //- .tt-required * Trường bắt buộc
+                input#email(type="text", name="email", value=values?values.email:"",placeholder="abc@vinh-ngo.com")
+                if msg && msg.email
+                    i.fas.fa-exclamation-circle
+                    if(msg.email)
+                        small #{msg.email}
+                
+                else if message !== "undefined"
+                    i.fas.fa-check-circle
+                    small#message #{message}
+                
+            .form-control(style="display:flex; flex-wrap:wrap;align-items:center;")
+                .col-auto
+                    .form-group
+                        button.btn(type='submit',style="margin:0;") Submit
+                .col-auto.align-self-center
+                    .form-group
+                        ul.additional-links
+                            li or
+                                | 
+                                a(href='/') Come Back
+//- PHwK1G
+//- block scripts
+//-     script.
+//-         $('#email').keyup(function() {
+//-             $.getJSON('/api/user/check?email='+$('#email').val(), function (data){
+//-                 if (data) {
+//-                     $('#message').html('Email đã tồn tại. Vui lòng chọn email khác.');
+//-                     $("#register").attr("disabled", true);
+//-                 }
+//-                 else {
+//-                     $('#message').html('');
+//-                     $("#register").attr("disabled", false);
+//-                 }
+//-             })
+//-         });

@@ -1,0 +1,246 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible",content="IE=edge")
+        meta(name="viewport",content="width=device-width, initial-scale=1.0")
+        
+        block title
+            title Mobile Shop - Smartphone
+        // GOOGLE FONT
+        link(href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;700&display=swap", rel="stylesheet")
+        link(href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&display=swap" rel="stylesheet")
+
+        // CAROUSEL
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.4.1/css/glide.core.css")
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.4.1/css/glide.theme.min.css")
+        link(rel="stylesheet", href="https://unpkg.com/aos@next/dist/aos.css")
+
+        // CUSTOME STYLESHEET
+        link(rel="stylesheet", type="text/css", href="/css/app.css")
+        link(rel="stylesheet", type="text/css", href="/css/style.css")
+        link(rel="stylesheet", type="text/css", href="/css/grid.css")
+        script(src="https://kit.fontawesome.com/7733233a30.js")
+        //- script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+        
+    body
+        //- .loader-wrapper
+            span.loader
+                span.loader-inner
+        .popup_box
+            div(data-aos='fade-up', data-aos-duration='1500')
+                i.fas.fa-exclamation
+                h1 Your product will be deleted Permanently!
+                label Are you sure to proceed?
+                .btns
+                    a.btn1(href='#') Cancel Process
+                    a.btn2(href='#') Delete Product
+        // HEADER
+        header#header
+            nav.top-header 
+                p Freeship order from 02 products
+                ul.navbar-nav
+                    if !user 
+                        li
+                            a(href="/user/sign-up") 
+                                i.fas.fa-user
+                                span register
+                        li 
+                            a(href="/user/sign-in")
+                                i.fas.fa-lock
+                                span Login
+                    else if user !== ""
+                        li
+                            a(href="/user/info/") 
+                                i.fas.fa-user
+                                span #{user.username}
+                        li 
+                            a(href="/user/log-out/")
+                                i.fas.fa-sign-out-alt
+                                span Logout
+            .navigation
+                .content-header
+                    nav.nav
+                        .nav_hamburger
+                            svg
+                                use(xlink:href="/images/sprite.svg#icon-menu")
+                        .nav_logo
+                            a.scroll-link(href="/") Smartphone 
+                        .nav_menu 
+                            .menu_top 
+                                span.nav_category Smartphone
+                                a.close_toggle(role='button')
+                                    svg
+                                        use(xlink:href="/images/sprite.svg#icon-cross")
+                            ul.nav_list
+                                li.nav_item
+                                    a.nav_link.scroll-link(href="/")  Home
+                                li.nav_item
+                                    a.nav_link.scroll-link(href="/products/All?page=1")  Stores
+                                li.nav_item
+                                    a.nav_link.scroll-link(href="/products/Apple?page=1")  Apple
+                                li.nav_item
+                                    a.nav_link.scroll-link(href="/products/SamSung?page=1")  SamSung
+                                li.nav_item
+                                    a.nav_link.scroll-link(href="/about")  About
+                                li.nav_item
+                                    a.nav_link.scroll-link(href="/contact")  Contact
+                                li.nav_item.nav_search 
+                                    form.navbar-search(action="/products/search/All?page=1", method="POST")
+                                        input.navbar-search-input(type="text", placeholder="Search for here...", name="key",value=question)
+                                        i.fas.fa-search
+                        
+                        .nav_icons#nav_icons
+                            a.icon_item(href="/cart/orders")  
+                                img(src="/images/account.png", alt="My Account")
+                            //- a.icon_item#cart-trigger(href="/cart/list")    
+                            a.icon_item#cart-trigger(role='button', style="position: relative;")
+                                img#cartImg(src="/images/shopping-cart.png", alt="My Cart")
+                                span#numItems.navbar-badge #{numItems||0}
+                            a.icon_item(role='button')
+                                form#form(action="/products/search/All?page=1", method="POST")
+                                    .search 
+                                        input.input(type="text", placeholder="Search for here...", name="key",value=question)
+                                        .btn-search
+                                            i.fas.fa-search                                            
+                        
+            // SLIDER        
+            block slider
+            // CATEGORY     
+            block category
+            // Latest Products
+            block latest
+        // Error
+        block error
+        // MAIN        
+        main       
+            block content
+        
+        #cd-shadow-layer
+        #cd-cart.cd-cart
+            .cd-header
+                h2 Shopping Cart
+                button#burger.burger
+                    .bar
+                    .bar
+            // cd-cart-total
+            h3#cart__label
+            if order 
+                - console.log(order)
+            ul.cd-cart-items#cart__list
+            .cd-cart-total#cart__total
+        // Facility Section
+        section.facility__section
+            .container
+                .facility__contianer(data-aos="fade-up",data-aos-duration="1000")
+                    .facility__box
+                        .facility-img__container
+                            svg 
+                                use(xlink:href="/images/sprite.svg#icon-airplane")
+                        p FREE SHIPPING WORLD WIDE
+                    .facility__box
+                        .facility-img__container
+                            svg 
+                                use(xlink:href="/images/sprite.svg#icon-credit-card-alt")
+                        p 100% MONEY BACK GUARANTEE
+                    .facility__box
+                        .facility-img__container
+                            svg 
+                                use(xlink:href="/images/sprite.svg#icon-credit-card")
+                        p MANY PAYMENT GATWAYS
+                    .facility__box
+                        .facility-img__container
+                            svg 
+                                use(xlink:href="/images/sprite.svg#icon-headphones")
+                        p 24/7 ONLINE SUPPORT
+        
+        // FOOTER
+        footer#footer.footer
+            .container-footer
+                .footer__top(data-aos='fade-up', data-aos-duration='1200') 
+                    .left.box
+                        .upper
+                            .topic About us
+                            p SmartShop gives you a chance to quickly and easily find the phone you want and have 
+                                | it delivered to your home in no time, regardless of your location.
+                        .lower
+                            .topic Contact us
+                            div 
+                                span
+                                    svg
+                                        use(xlink:href="/images/sprite.svg#icon-phone")
+                                a(href="#") 456-456-4512
+                            div 
+                                span
+                                    svg
+                                        use(xlink:href="/images/sprite.svg#icon-envelop")
+                                a(href="mailto:CONTACT@SMART.COM ") CONTACT@SMART.COM 
+                            div 
+                                span
+                                    svg
+                                        use(xlink:href="/images/sprite.svg#icon-location")
+                                a(href="#") 42 Dream House, Dreammy street, 7131 Dreamville, USA
+                    .middle.box
+                        .topic Our Services
+                        div
+                            a(href='#') Web Design, Development
+                        div
+                            a(href='#') Web UX Design, Reasearch
+                        div
+                            a(href='#') Web User Interface Design
+                        div
+                            a(href='#') Theme Development, Design
+                        div
+                            a(href='#') Mobile Application Design
+                        div
+                            a(href='#') Wire raming &amp; Prototyping
+                    .right.box
+                        .topic Join Our Email List
+                        p Be the first to know about our secret sample sales and special events.
+                        div
+                            //- input.input__send(type='text', placeholder='Enter email address')
+                            input#input__send(type='text', placeholder='Enter email address')
+                            span(style='color:red;font-style: italic;',id='contact_mess') 
+                            input(type='submit', value='Send',id="send-btn")
+                            span.message
+                            .media-icons
+                                a(href='#')
+                                    i.fab.fa-facebook-f
+                                a(href='#')
+                                    i.fab.fa-instagram
+                                a(href='#')
+                                    i.fab.fa-twitter
+                                a(href='#')
+                                    i.fab.fa-youtube
+                                a(href='#')
+                                    i.fab.fa-linkedin-in
+        
+        // Popup
+        block popUp
+
+        // Go To
+        a.goto-top.scroll-link(href='javascript: scrollToForm();')
+            svg
+                use(xlink:href='/images/sprite.svg#icon-arrow-up')
+        //LOADING
+        //- block loading
+        
+        // Glide Carousel Script
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.4.1/glide.min.js')
+        // Animate On Scroll
+        script(src='https://unpkg.com/aos@2.3.1/dist/aos.js')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+        //- script(src="/js/jquery.min.js")
+        script(src="/js/jquery.zoom.min.js")
+        script(src="/js/index.js")
+        //- script.
+            
+            $(window).on("load",function(){
+                setTimeout(function(){
+                    $(".loader-wrapper").fadeOut("slow");
+                },800)
+            });
+
+            
+        block scripts
+        

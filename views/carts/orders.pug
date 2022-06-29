@@ -1,0 +1,98 @@
+extends ../layout
+block content
+    .loader-wrapper
+        span.loader
+            span.loader-inner
+    .popup_alert.center
+        div(data-aos='fade-up', data-aos-duration='1000')
+            .icon
+                i.fa.fa-check
+            .title Success!!
+            .description
+            .dismiss-btn
+                button#dismiss-popup-btn Dismiss
+    #table_orders
+        if user && data
+            .container(style="display:flex; justify-content:space-between;")
+                .block.block-account(style="max-width:400px;width:100%;")
+                    .general__title
+                        h2 
+                            span Account Information
+                    .block-content
+                        p Account: 
+                            strong #{user.username}
+                        p Fullname: 
+                            strong #{user.name}
+                        p Email: 
+                            strong #{user.email}
+                        p Phone Number: 
+                            strong #{user.phoneNumb}
+                    .add-to-cart
+                        a(href="/user/change-password",style="padding: 0.65rem 1rem;") Change Password
+                div(style="display:flex;flex-direction: column;max-width:900px;width:100%;")
+                    .container-invoice
+                        h3 List Of Unapproved Orders
+                        table.table.table-responsive
+                            thead
+                                tr
+                                    th Index
+                                    th Date
+                                    th Price
+                                    th Status
+                                    th Action
+                            tbody
+                                //- - console.log( data[0]._id)
+                                each order in data
+                                    if order.status===0
+                                        tr
+                                            td(data-title='Index') ##{(order._id.toHexString()).slice(0,8)}
+                                            td(data-title='Date') #{order.createdAt}
+                                            td(data-title='Price') #{order.total.toLocaleString("it-IT")}
+                                            td(data-title='Status')
+                                                .payment-status.payment-pending
+                                                    .dot 
+                                                    span Pending
+                                            td.action(colspan="2", data-title='Action') 
+                                                a(href="/cart/detail-order/"+order._id) View
+                                                //- a(href="/cart/delete-order/"+order._id) Cancel
+                                                a(style="cursor:pointer;",role='button',onclick='cancleOrder("'+order._id+'")') Cancel
+                                    
+                    .container-invoice
+                        h3 All List Of Orders
+                        table.table.table-responsive
+                            thead
+                                tr
+                                    th Index
+                                    th Date
+                                    th Price
+                                    th Status
+                                    th Action
+                            tbody
+                                each order in data
+                                    if order.status !== 0
+                                        tr
+                                            td(data-title='Index') ##{(order._id.toHexString()).slice(0,8)}
+                                            td(data-title='Date') #{order.createdAt}
+                                            td(data-title='Price') #{order.total.toLocaleString("it-IT")}
+                                            td(data-title='Status') 
+                                                if order.status===1
+                                                    .payment-status.payment-progress
+                                                        .dot 
+                                                        span In progress
+                                                else if order.status===2
+                                                    .payment-status.payment-paid
+                                                        .dot 
+                                                        span Completed
+                                                else if order.status === 3
+                                                        .payment-status.payment-delayed
+                                                            .dot 
+                                                            span User cancel
+                                                else 
+                                                    .payment-status.payment-delayed
+                                                        .dot 
+                                                        span Staff cancel
+                                            td.action(colspan="2") 
+                                                a(href="/cart/detail-order/"+order._id) View
+        else 
+            .container
+                h3 You need to Login or Add to cart            

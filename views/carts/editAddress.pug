@@ -1,0 +1,35 @@
+extends ../layout
+block content
+    .page__title-area
+        .container(style="padding-bottom: 0; margin-bottom:0;")
+            .page__title-container
+                ul.page__titles
+                    li
+                        a(href="/")
+                            i.fas.fa-home
+                    li.page__title 
+                        a(href="/cart/list") Cart
+                    li.page__title 
+                        a(href="/cart/check-out") Order
+    .container.col-6(style='padding:0 10px;')
+        form.form-checkout(action=`/cart/orders/edit-addr/${data._id}`,method="POST")
+            .billing-details
+                    div.section-title
+                        h3 Payment and delivery address
+                    div
+                        .form-control
+                            label(for='email') Email
+                            input#email(value=data?data.email:"", type="text", name="email",placeholder="Email", disabled)
+
+                        .form-control
+                            label(for='ten') Customer
+                            input#ten(value=data?data.nguoiNhan:"", type="text",name="nguoiNhan",placeholder="Full Name", required)
+
+                        .form-control
+                            label(for='sdt') Phone Number
+                            input#sdt(value=data?data.sdtNguoiNhan:"", type="text", name="sdtNguoiNhan", placeholder="Phone Number", required)
+
+                        .form-control
+                            label(for='diaChi') Address
+                            input#diaChi(value=data?data.diaChiNhan:"", type="text", name="diaChiNhan",placeholder="Address", required)
+                        button#checkOut(type='submit') Change

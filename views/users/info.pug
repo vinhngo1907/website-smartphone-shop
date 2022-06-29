@@ -1,0 +1,46 @@
+extends ../layout
+block title 
+    title Account - SmartShop
+block content 
+    .loader-wrapper
+        span.loader
+            span.loader-inner
+    .page__title-area
+        .container
+            .page__title-container
+                ul.page__titles
+                    li
+                        a(href="/")
+                            i.fas.fa-home
+                    li.page__title 
+                        a(href="#") user
+                    li.page__title 
+                        a(href=`/${title}`) #{title}
+    if(user)
+        .container 
+            .col-md-7(style="display:flex;") 
+                .img-details(style="width:100%;max-width: 600px;margin-right: 20px;")
+                    if user.avatar
+                        img(src=`/${user.avatar}`, alt="user info", width="100%")
+                    else 
+                        img(src=`/images/profile.png`,  width="80%")
+
+                div(style="display:flex;flex-direction:column;")    
+                    .billing-details
+                        div.section-title(style="text-align:left;line-height: 1;width: 100%;")
+                            h1 Payment information to receive
+                            h3 Email: 
+                                p #{user.email}
+                            h3 Customer: 
+                                p #{user.name}
+                            h3 Phone Number:  
+                                p #{user.phoneNumb}
+                            h3 Address: 
+                                p #{user.address}
+                        //- button#checkOut(style="width: 80%;") Chỉnh sửa thông tin
+                        a#checkOut(href="/user/edit", style="width: 80%;text-align: center;") Edit your profile
+            
+    else
+        .container 
+            h3 You need to login
+                    

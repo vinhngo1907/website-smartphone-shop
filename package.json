@@ -1,0 +1,37 @@
+{
+    "name": "webclient",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "dev": "nodemon ./bin/www",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node ./bin/www"
+    },
+    "author": "Vinh Ngo",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^5.0.1",
+        "connect-flash": "^0.1.1",
+        "connect-mongodb-session": "^3.1.1",
+        "cookie-parser": "^1.4.5",
+        "debug": "^4.3.2",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "express-session": "^1.17.2",
+        "http-errors": "^1.8.0",
+        "mongodb": "^4.1.0",
+        "morgan": "^1.10.0",
+        "multer": "^1.4.3",
+        "nodemailer": "^6.6.3",
+        "passport": "^0.4.1",
+        "passport-local": "^1.0.0",
+        "pug": "^3.0.2",
+        "randomstring": "^1.2.1",
+        "serve-favicon": "^2.5.0",
+        "session": "^0.1.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.12"
+    }
+}

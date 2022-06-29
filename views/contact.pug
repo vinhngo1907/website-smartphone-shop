@@ -1,0 +1,76 @@
+extends layout 
+block title 
+    title Contact - SmartShop
+block content 
+    .popup_alert.center
+        div(data-aos='fade-up', data-aos-duration='1100')
+            .icon
+                i.fa.fa-check
+            .title Success!!
+            if msg && typeof msg !== 'undefined'
+                .description #{msg}
+            .dismiss-btn
+                button#dismiss-popup-btn Dismiss
+    .page__title-area
+        .container(style='display:flex; justify-content:space-between;align-items:center;')
+            .page__title-container
+                ul.page__titles
+                    li
+                        a(href="/")
+                            i.fas.fa-home
+                    li.page__title 
+                        a(href=`/${title.toLowerCase()}`) #{title}
+            
+            //- .alert
+                span.closeAlert(onclick="this.parentElement.style.display='none';") &times;
+                strong Success!
+                | #{msg || ''}   
+    .container-form
+        .header    
+            h2 Contact Us
+        form#form.form(action="/contact", method="POST")
+            .user-details(style='margin-bottom:0;')
+                if user
+                    .form-control
+                        label(for="email") Email *
+                        input#email.disabled(type="text", name="send",value=user?user.email:'', placeholder="abc@vinh-ngo.com")
+                        if typeof message !== 'undefined'
+                            i.fas.fa-exclamation-circle
+                            small#message #{message}
+
+                    .form-control
+                        label(for="name") Your Name *
+                        input#name.disabled(type="text", name="name", value=user?user.name:'',placeholder="abc vinh-ngo")
+                else
+                    .form-control
+                        label(for="email") Email *
+                        input#email(type="text", name="send", placeholder="abc@vinh-ngo.com",required)
+                        if typeof message !== 'undefined'
+                            i.fas.fa-exclamation-circle
+                            small#message #{message}
+
+                    .form-control
+                        label(for="name") Your Name *
+                        input#name(type="text", name="name", placeholder="abc vinh-ngo",required)
+
+            .form-control
+                label(for="content") Content
+                textarea#content.input(name='content', placeholder="Your content, e.g. special question.",required)
+            button#send Send
+block scripts
+    script.
+        let msg = $('#message').text()
+        if(msg !== ''){
+            $('#email').toggleClass("error");
+        }
+        let message = document.getElementsByClassName('description')
+
+        let mess = $('.description').text()
+        if(mess !== ''){
+            $('.popup_alert').addClass("active");
+            document.body.classList.add('active_cart');
+        }
+        document.getElementById("dismiss-popup-btn").addEventListener("click",function(){
+            document.getElementsByClassName("popup_alert")[0].classList.remove("active");
+            document.body.classList.remove('active_cart');
+        });

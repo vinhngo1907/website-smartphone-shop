@@ -1,0 +1,150 @@
+extends ../layout
+block content
+    .loader-wrapper
+        span.loader
+            span.loader-inner
+    .popup_alert.center
+        div(data-aos='fade-up', data-aos-duration='1000')
+            .icon
+                i.fa.fa-check
+            .title Success!!
+            .description
+            .dismiss-btn
+                button#dismiss-popup-btn Dismiss
+    .page__title-area
+        .container(style="padding-bottom: 0; margin-bottom:0;")
+            .page__title-container
+                ul.page__titles
+                    li
+                        a(href="/")
+                            i.fas.fa-home
+                    li.page__title 
+                        a(href="/cart/list") Cart
+                    li.page__title 
+                        a(href=`/cart/${title}`) #{title}
+    .container(style='padding:0 10px;')
+        form.form-checkout(action="/cart/check-out",method="POST")
+            .billing-details#billing-details
+                    div.section-title
+                        h3 Billing & Shipping
+                    div
+                        .form-control
+                            label(for='email') Email
+                            input#email(value=user?user.email:"", type="text", name="email",placeholder="Email", required)
+
+                        .form-control
+                            label(for='ten') Customer
+                            input#ten(value=user?user.name:"", type="text",name="name",placeholder="Full Name", required)
+
+                        .form-control
+                            label(for='sdt') Phone Number
+                            input#sdt(value=user?user.phoneNumb:"", type="text", name="phoneNumb", placeholder="Phone Number", required)
+
+                        .form-control
+                            label(for='diaChi') Address
+                            input#diaChi(value=user?user.address:"", type="text", name="address",placeholder="Address", required)
+                        .form-control(style="margin-bottom:0;")
+                            label(for='code') Discount code(optional)
+                            .col-10.code(style='display:flex;align-items:center;margin:0; padding: 0;justify-content:center;')
+                                input#code(type="text", name="code",placeholder="Gift card or discount code")
+                                button.check-coupon(type='button') Apply
+                            small#message #{message}
+                        div(style="margin:0.5rem 0 1rem 0.5rem;")
+                            a.btn-shop(href="/cart/list") 
+                                i.fas.fa-arrow-left
+                                | Go back
+            
+            .order-details
+                .section-title
+                    h3 Your order
+                .order-summary#order-summary 
+                    .order-col
+                        div(style='max-width: 300px;width:100%;text-align:left;')
+                            strong Products
+                        div(style='max-width: 150px;width:50%;text-align:left;')
+                            strong Quantity
+                        div(style='max-width: 120px;width:100%;text-align:right;')
+                            strong Line total
+                    .order-products
+                        each item in data
+                            .order-col 
+                                    div(style='max-width: 300px;width:100%;')
+                                        a(href="#") #{item.proName}
+                                    div(style="max-width: 150px;width:50%;text-align:left;") #{item.qty}
+                                    //- div
+                                    if item.sale_off !== 0
+                                        //- div #{item.qty}
+                                        //- div
+                                        div #{(item.price - (item.price*item.sale_off)/100).toLocaleString("it-IT")}
+                                    else 
+                                        //- div #{item.qty}
+                                        //- div
+                                        div #{item.price.toLocaleString("it-IT")} 
+                    .order-col
+                        .order-shipped  Shipping
+                        .order-ship-free
+                            strong Free
+                    //- - console.log(typeof discount)
+                    if coupon
+                        .order-col
+                            .order-shipped  Discount voucher
+                            .order-ship-free(style='display:flex;') 
+                                //- if coupon && coupon !== ''
+                                strong#voucher #{'-'+(coupon.discount).toLocaleString("it-IT")+' VND'}
+                                //- a(href=`/cart/coupon/${coupon.code}`, style='margin-left: 10px;')
+                                a(style='margin-left: 10px;',onclick='removeCoupon("'+ coupon.code +'")',role='button')
+                                    i.fas.fa-times-circle
+                    .order-col
+                        div
+                            strong SUBTOTAL
+                        //- - var subTotal = (coupon)?total-coupon.discount:total
+                        div#total
+                            span.order-total #{(total).toLocaleString('it-IT') + " VNĐ"}
+                   
+                    button#checkOut(type='submit') Order
+                    p(style='line-height:1.5;') Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.
+block scripts
+    script.
+        var temp = document.getElementById('cart-trigger')
+        temp.classList.add('none')
+        const total = $("#total span").text();
+        const currency = total.split(' ')[0]
+        const number = Number(currency.replace(/[^0-9.-]+/g,""));
+        //- console.log(number)
+        $('.check-coupon').click(function(){ 
+            let value = $('#code').val()
+            let price = $('#voucher').text().split(' ')
+            let temp = price[0].slice(1).trim()
+            //- let newprice = Number(temp.replace(/[^0-9.-]+/g,""));   
+            //- console.log(newprice) 
+            if(price.length > 1){
+                $('#message').html('Only 1 discount code can be used per order!!');
+                return 
+            }
+            
+            if(value !== ''){
+                //- $.getJSON('/api/user/coupon?code='+$('#code').val(), function (res){
+                    $.post('/api/user/coupon',{code:$('#code').val()}, function (res){
+                    //- console.log(res)
+                    if (!res.codeExist) {
+                        $('#message').html(res.message);
+                    }else{
+                        $('#message').html('');
+                        if(!res.success){
+                            $('#message').html(res.message);
+                            return 
+                        }else{
+                            $('#order-summary').load(window.location.href + " #order-summary ")
+                            return
+                        }
+                        //- $.getJSON('/api/user/apply?code='+coupon.code,function(coupon){
+                        //-     $('#order-summary').load(window.location.href + " #order-summary ")
+                        //- })                        
+                    }    
+                })
+            }
+            else{
+                $('#message').html('Please enter Coupon Code if available!!');
+                return
+            }
+        });

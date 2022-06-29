@@ -1,0 +1,249 @@
+extends ../layout
+block title 
+    title Product - SmartShop
+block content
+    .popup_alert.center
+        div(data-aos='fade-up', data-aos-duration='1000')
+            .icon
+                i.fa.fa-check
+            .title Success!!
+            //- if message && message.length>0
+                .description #{message}
+            .description
+            .dismiss-btn
+                button#dismiss-popup-btn Dismiss
+    .container-invoice
+        .card-wrapper
+            .card
+                // card left
+                .product-imgs
+                    .img-display
+                        .img-showcase
+                            img(src = `${product.url}`, alt='product image')
+                            img(src = `${product.url}`, alt='product image')
+                            img(src = `${product.url}`, alt='product image')
+                            img(src = `${product.url}`, alt='product image')
+                    .img-select
+                        .img-item
+                            a(href='#', data-id='1')
+                                img(src=`${product.url}`, alt='product image')
+                        .img-item
+                            a(href='#', data-id='2')
+                                img(src=`${product.url}`, alt='product image')
+                        .img-item
+                            a(href='#', data-id='3')
+                                img(src=`${product.url}`, alt='product image')
+                        .img-item
+                            a(href='#', data-id='4')
+                                img(src=`${product.url}`, alt='product image')
+                // card right
+                .product-content
+                    h2.product-title #{product.proName}
+                    - var category = product.proCategory.toLowerCase()
+                    a.product-link(href=`https://www.${category}.com/`, target="_blank") visit #{product.proCategory} store
+                    .product-rating
+                        i.fas.fa-star
+                        i.fas.fa-star
+                        i.fas.fa-star
+                        i.fas.fa-star
+                        i.fas.fa-star-half-alt
+                        span &nbsp; 4.7(21)
+                    .product-price
+                        - var sale_off = product.price-(product.price*product.sale_off)/100
+                        if product.sale_off !== 0
+                            p.last-price Old Price:&nbsp;
+                                span #{(product.price/22765.00).toLocaleString("en-US",{style: 'currency', currency: 'USD' })}
+                            p.new-price  New Price:&nbsp;  
+                                span #{(sale_off/22765.00).toLocaleString("en-US", { style: 'currency', currency: 'USD' })}
+                        else 
+                            p.new-price  Price:&nbsp;  
+                                span #{(product.price/22765.00).toLocaleString("en-US", { style: 'currency', currency: 'USD' })}
+                    .product-detail
+                        h2 About This Item: 
+                        h4 #{product.inventNumb!==0?`${product.inventNumb} in stock`:'Out of stock'}
+                        ul
+                            li Screen: 
+                                span #{product.screen}
+                            li Front Camera: 
+                                span #{product.camFront}
+                            li Back Camera: 
+                                span #{product.camBack}
+                            li CPU:
+                                span #{product.cpu}
+                            li RAM:
+                                span #{product.ram}
+                            li ROM:
+                                span #{product.rom}
+                            li SIM: 
+                                span #{product.sim}
+                    .purchase-info
+                        //- input(type='number', min='1', value='1', name='qty')
+                        //- a.btn(href=`/cart/add/${product._id}`)
+                        a.btn(onclick='addItem("'+ product._id+'","'+product.inventNumb+'")', role='button')
+                            i.fas.fa-shopping-cart  Add to Cart 
+                        a.btn(href="#") Compare 
+                    .social-links
+                        p Share At: 
+                        a(href='#')
+                            i.fab.fa-facebook-f
+                        a(href='#')
+                            i.fab.fa-twitter
+                        a(href='#')
+                            i.fab.fa-instagram
+                        a(href='#')
+                            i.fab.fa-whatsapp
+                        a(href='#')
+                            i.fab.fa-pinterest
+    .wrapper
+        //- header Pure CSS Tabs
+        input#home(type='radio', name='slider', checked='')
+        input#blog(type='radio', name='slider')
+        nav.tab-nav
+            label.home(for='home')
+                i.fas.fa-info
+                | Chi tiết
+                
+            label.blog(for='blog')
+                i.fas.fa-blog
+                | Đánh giá (#{count})
+        section.tab-content
+            .content.content-1
+                .title This is a Details Products
+                p 
+                    b Description: 
+                    | #{product.proDescrip}
+                
+            .content.content-2
+                .row 
+                    
+                    //- .row
+                    .row(style="display:flex;flex-direction: column;")
+                        // Rating
+                        #rating.col-12(style="margin-bottom: 10px;")
+                            .rating-avg
+                                span #{avg}
+                                - let x = Math.ceil(avg)
+                                - let y = 5 - x
+                                .rating-stars
+                                    - let i= 0
+                                    while i < x
+                                        i.fa.fa-star
+                                        - i = i + 1
+                                    if y !==0 && y !== 5
+                                        //- - console.log(y%1!==0)
+                                        //- if y%1!==0 
+                                        //-     - let t= 0
+                                        //-     while t < Math.ceil(y)
+                                        //-         - t = t + 1
+                                        //-         i.fa.fa-star-o
+                                        //-     i.fas.fa-star-half-alt
+                                        //- else
+                                        - let t= 0
+                                            while t < y
+                                                i.fa.fa-star-o
+                                                - t = t + 1
+                                    //- else
+                                    //-     i.fa.fa-star-o
+                                    //-     i.fa.fa-star-o
+                                    //-     i.fa.fa-star-o
+                                    //-     i.fa.fa-star-o
+                                    //-     i.fa.fa-star-o
+                            ul.rating
+                                li
+                                    .rating-stars
+                                        i.fa.fa-star
+                                        i.fa.fa-star
+                                        i.fa.fa-star
+                                        i.fa.fa-star
+                                        i.fa.fa-star
+                                    .rating-progress
+                                        .progress-done(style='width: 80%;',data-done="80")
+                                    span.sum 3
+                                li
+                                    .rating-stars
+                                        i.fa.fa-star
+                                        i.fa.fa-star
+                                        i.fa.fa-star
+                                        i.fa.fa-star
+                                        i.fa.fa-star-o
+                                    .rating-progress
+                                        .progress-done(style="width: 60%;",data-done="60")
+                                    span.sum 2
+                                li
+                                    .rating-stars
+                                        i.fa.fa-star
+                                        i.fa.fa-star
+                                        i.fa.fa-star
+                                        i.fa.fa-star-o
+                                        i.fa.fa-star-o
+                                    .rating-progress
+                                        .progress-done(style="width: 60%;",data-done="0")
+                                    span.sum 0
+                                li
+                                    .rating-stars
+                                        i.fa.fa-star
+                                        i.fa.fa-star
+                                        i.fa.fa-star-o
+                                        i.fa.fa-star-o
+                                        i.fa.fa-star-o
+                                    .rating-progress
+                                        .progress-done(style="width: 60%;",data-done="0")
+                                    span.sum 0
+                                li
+                                    .rating-stars
+                                        i.fa.fa-star
+                                        i.fa.fa-star-o
+                                        i.fa.fa-star-o
+                                        i.fa.fa-star-o
+                                        i.fa.fa-star-o
+                                    .rating-progress
+                                        .progress-done(style="width: 60%;",data-done="0")
+                                    span.sum 0
+                        
+                        // Review Form
+                        #review-form.col-12
+                            h1(style="text-align: left;") Remark
+                            form.review-form(method='POST', action='/comment/add/'+product._id,style="display:flex;flex-direction:column;")
+                                if !user
+                                    input.input-txt.form-control(type="text",name="username",placeholder="Your name")
+                                textarea.input-txt.form-control(name='comment', placeholder='Remark',style="margin: 0px 0px 10px; width: 326px; height: 96px;resize: none;")
+                                .input-rating(style="margin-bottom: 20px;display: flex; align-items: center;")
+                                    span Ratings: 
+                                    .stars
+                                        input#star5(name='rating', value='5', type='radio')
+                                        label(for='star5')
+                                        input#star4(name='rating', value='4', type='radio')
+                                        label(for='star4')
+                                        input#star3(name='rating', value='3', type='radio')
+                                        label(for='star3')
+                                        input#star2(name='rating', value='2', type='radio')
+                                        label(for='star2')
+                                        input#star1(name='rating', value='1', type='radio')
+                                        label(for='star1')
+                                .add-to-cart
+                                    button.primary-btn#remark Remark
+                    // Review
+                    .row(style="max-width: 520px; width: 100%;")
+                        #reviews.col-12
+                            h1(style="text-align: left;") Comments
+                            ul#comment.reviews
+                                each cmt in comments
+                                    li
+                                        .review-heading
+                                            h3.name #{cmt.username}
+                                            p.date #{cmt.dateTime}
+                                            .review-rating
+                                                - let x = 5-parseInt(cmt.rating)
+                                                - let i = 0
+                                                while i < parseInt(cmt.rating)
+                                                    i.fa.fa-star
+                                                    - i = i + 1
+                                                if cmt.rating !== "5" && (x > 0)
+                                                    - let t = 0
+                                                    while t < x
+                                                        i.fa.fa-star-o.empty
+                                                        - t = t + 1
+                                        .review-body
+                                            p  #{cmt.comment}
+block scripts 
+    script(src="/js/script.js")            

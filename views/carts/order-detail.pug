@@ -1,0 +1,63 @@
+extends ../layout
+block content
+    .container
+        .container-invoice
+            h2(style="text-align:left;") Chi tiết đơn hàng
+            table.table
+                thead
+                    tr
+                        th Sản phẩm
+                        th Số lượng
+                        th Giá
+                        th Thành tiền
+                tbody
+                    each item in data.LISTPRODUCT
+                        tr
+                            td #{item.proName}
+                            td #{item.qty}
+                            td #{item.newPrice.toLocaleString("it-IT")}
+                            td #{(item.newPrice*item.qty).toLocaleString("it-IT")}
+        .container-order
+            .row
+                .col-12
+                    h2 Thông tin thanh toán
+                    p Đơn hàng số: 
+                        strong #{data._id}
+                    p Ngày đặt hàng: 
+                        strong #{data.createdAt}
+                    p Người nhận: 
+                        strong #{data.nguoiNhan}
+                    p Số điện thoại người nhận: 
+                        strong #{data.sdtNguoiNhan}
+                    p Địa chỉ nhận: 
+                        strong #{data.diaChiNhan}
+
+            .row
+                .col-12
+                    h2 Tổng tiền hóa đơn
+                    table.table
+                        //- thead 
+                        tbody
+                            tr
+                                td Tổng tiền đơn hàng:
+                                td #{data.total.toLocaleString("it-IT")+' VNĐ'}
+                            tr
+                                td Phí giao hàng:
+                                td Liên hệ sau
+                            if data.coupon 
+                                tr
+                                    td Voucher:
+                                    td -#{data.coupon.toLocaleString("it-IT")+' VNĐ'}
+                            - data.total = (data.coupon) ? (data.total-data.coupon) : data.total
+                            tr 
+                                td Tổng thanh toán:
+                                if !shipping
+                                    td #{(data.total).toLocaleString('it-IT') + " VNĐ"}
+                                else 
+                                    td #{(data.total+data.shipping).toLocaleString('it-IT') + " VNĐ"}
+                    .total
+                        span Total
+                        span #{(data.total.toLocaleString("it-IT"))}
+        .add-to-cart(style='margin-left:1rem;')
+            a(href="/cart/orders",style="padding: 1rem 2rem;") Come Back
+            a(href=`/cart/orders/edit-addr/${data._id}`,style="padding: 1rem 2rem;") Edit Address

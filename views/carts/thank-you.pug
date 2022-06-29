@@ -1,0 +1,63 @@
+extends ../layout
+block content
+    //- .container-order
+    if customer
+        .container-order(data-aos='fade-up', data-aos-duration='1100')
+            h3.fa.fa-check-circle(style=" color: #333; background: #fff; font-size: 1.5rem; font-weight: bold;")
+                //- | Thông tin đơn hàng đã được gửi đến #{user.email} . Qúy khách hãy đăng nhập gmail để kiểm tra thông tin đơn hàng.
+                | Order information has been sent to #{customer.email} . Please login gmail to check order information.
+        .container-invoice(data-aos='fade-up', data-aos-duration='1200')
+            .row
+                .col-12
+                    h2 Thông tin thanh toán nhận hàng
+                    table.table
+                        thead
+                            tr
+                                th
+                        tbody
+                            tr
+                                td Người nhận: 
+                                    strong #{customer.name}
+                            tr
+                                td Số điện thoại: 
+                                    strong #{customer.phoneNumb}
+                            tr
+                                td Địa chỉ thanh toán: 
+                                    strong #{customer.address}
+            .row
+                .col-12
+                    h2 Thông tin đơn hàng
+                    table.table(style='color: #333;')
+                        thead
+                            tr
+                                //- th(colspan='3', style='font-weight: 600;') 
+                        tbody
+                            tr(style='background: #fafafa; color: #333;')
+                                td Sản phẩm
+                                td Số lượng
+                                td Giá
+                                td Tổng
+                            each item in data
+                                tr
+                                    td #{item.proName}
+                                    td #{item.qty}
+                                    td #{item.newPrice}
+                                    td #{(item.newPrice*item.qty).toLocaleString("it-IT")} VND
+                            tr
+                                td(colspan='3') Tổng cộng :
+                                td #{(total).toLocaleString("it-IT")} VND
+                            tr
+                                td(colspan='3') Vận chuyển
+                                td Miễn phí
+                            if coupon !== 0
+                                tr
+                                    td(colspan='3') Voucher
+                                    td #{'-'+coupon.toLocaleString("it-IT")+' VND'}
+                            tr
+                                td.font-weight-600(colspan='3') 
+                                    | Thành tiền
+                                    br
+                                    span(style='font-style: italic;') (Tổng số tiền thanh toán)
+                                //- - console.log(coupon)
+                                td(style='font-weight: 600; font-size: 17px;color: red;') #{(total-coupon).toLocaleString("it-IT")+'VND'}
+                                //- #{(total).toLocaleString("it-IT")} VND

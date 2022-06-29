@@ -1,0 +1,74 @@
+extends ../layout
+block title 
+    title Login - Smartshop
+block content
+    .popup_alert.center
+        div(data-aos='fade-up', data-aos-duration='1000')
+            .icon
+                i.fa.fa-check
+            .title Success!!
+            .description
+            .dismiss-btn
+                button#dismiss-popup-btn Dismiss
+    .page__title-area
+        .container
+            .page__title-container
+                ul.page__titles
+                    li
+                        a(href="/")
+                            i.fas.fa-home
+                    li.page__title 
+                        a(href="user/info") user
+                    li.page__title 
+                        a(href=`/user/${title}`) #{title}
+
+    .container-form(style="max-width: 500px;width: 100%;") 
+        .header    
+            h2 Login Account
+        form#form.form(action="/user/sign-in", method="POST", encrypt="multipart/form-data")
+            .form-control#user
+                label(for="email") Email
+                input#email.input-txt(type="text", name="email", value=values?values.email:"",placeholder="abc@vinh-ngo.com", required)
+                //- if msg && msg.email
+                //-     i.fas.fa-exclamation-circle
+                //-     small #{msg.email}
+                if message !== 'undefined'
+                    i.fas.fa-exclamation-circle
+                    small#message #{message}
+                
+            .form-control#pass
+                label(for="password") Password
+                input#password.input-txt(type="password", name="password", value=values?values.password:"",placeholder="Password", required)
+                //- if msg && msg.pass
+                    i.fas.fa-exclamation-circle
+                    small=msg.pass
+                if message !== 'undefined'
+                    i.fas.fa-exclamation-circle
+                    small#message #{message}
+            button#login Submit
+            p
+                span.form-txt
+                    | Don't have an account? 
+                    a( href="/user/sign-up") Sign up!
+                
+                span.form-txt
+                    a( href="/user/forgot-password") Forgot password?
+block scripts
+    script.
+        let msg = $('#user small').text()
+        if(msg !== ''){
+            $('#email').toggleClass("error");
+            $('#password').toggleClass("error");
+        }
+//-         $('#email').keyup(function() {
+//-             $.getJSON('/api/user/verify?email='+$('#email').val(), function (data){
+//-                 if (data) {
+//-                     $('#message').html('User not found. Please try again.');
+//-                     $("#login").attr("disabled", true);
+//-                 }
+//-                 else {
+//-                     $('#message').html('');
+//-                     $("#login").attr("disabled", false);
+//-                 }
+//-             })
+//-         });
